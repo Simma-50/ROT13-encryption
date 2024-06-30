@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Function prototypes
+char* encpt(char encpt_txt[]);
+char* decpt(char decpt_txt[]);
+
+int main()
+{
+    char input[500], result[500];
+    int choice;
+
+    // Prompt user for choice
+    printf("Enter 1 to encrypt or 2 to decrypt: ");
+    scanf("%d", &choice);
+
+    // Check if the choice is valid
+    if (choice != 1 && choice != 2) {
+        printf("Invalid choice!\n");
+        return 1;
+    }
+
+    // Prompt user for input text
+    printf("Enter text: \n");
+    scanf("%s", input);
+
+    // Process based on user choice
+    if (choice == 1) {
+        // Encrypt the input text
+        strcpy(result, encpt(input));
+        // Print the encrypted text
+        printf("\nEncrypted text: \n");
+        printf("%s\n", result);
+    } else if (choice == 2) {
+        // Decrypt the input text
+        strcpy(result, decpt(input));
+        // Print the decrypted text
+        printf("\nDecrypted text: \n");
+        printf("%s\n", result);
+    }
+
+    return 0;
+}
+
+// Function to encrypt the input text using ROT13
+char* encpt(char encpt_txt[])
+{
+    int i, n;
+    char ch;
+
+    // Iterate over each character in the input string
+    for (i = 0; i < strlen(encpt_txt); i++)
+    {
+        n = encpt_txt[i]; // Get the ASCII value of the character
+
+        // Check if it's an alphabetic character
+        if (isalpha(n))
+        {
+            // If it's an uppercase letter
+            if (isupper(n))
+            {
+                // Rotate the character by 13 places
+                n = ((n - 'A' + 13) % 26) + 'A';
+            }
+            // If it's a lowercase letter
+            else if (islower(n))
+            {
+                // Rotate the character by 13 places
+                n = ((n - 'a' + 13) % 26) + 'a';
+            }
+            ch = n; // Get the new character after rotation
+            encpt_txt[i] = ch; // Replace the original character with the new one
+        }
+    }
+    return encpt_txt; // Return the encrypted string
+}
+
+// Function to decrypt the input text using ROT13
+char* decpt(char decpt_txt[])
+{
+    int i, n;
+    char ch;
+
+    // Iterate over each character in the input string
+    for (i = 0; i < strlen(decpt_txt); i++)
+    {
+        n = decpt_txt[i]; // Get the ASCII value of the character
+
+        // Check if it's an alphabetic character
+        if (isalpha(n))
+        {
+            // If it's an uppercase letter
+            if (isupper(n))
+            {
+                // Rotate the character by 13 places in the opposite direction
+                n = ((n - 'A' - 13 + 26) % 26) + 'A';
+            }
+            // If it's a lowercase letter
+            else if (islower(n))
+            {
+                // Rotate the character by 13 places in the opposite direction
+                n = ((n - 'a' - 13 + 26) % 26) + 'a';
+            }
+            ch = n; // Get the new character after rotation
+            decpt_txt[i] = ch; // Replace the original character with the new one
+        }
+    }
+    return decpt_txt; // Return the decrypted string
+}
